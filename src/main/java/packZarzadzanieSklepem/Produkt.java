@@ -29,4 +29,10 @@ public class Produkt {
                 ", ilosc=" + ilosc +
                 '}';
     }
+
+    public String toStringZapis() {
+        return  "nazwa=" + nazwa + "\n" +
+                "cena=" + cena + "\n" +
+                "ilosc=" + ilosc + "\n";
+    }
 }

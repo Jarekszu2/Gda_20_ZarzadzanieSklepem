@@ -1,5 +1,6 @@
 package packZarzadzanieSklepem;
 
+import java.io.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -284,9 +285,38 @@ public class Main {
                     break;
                 case 'f':
                     System.out.println("Zapis do pliku.");
+                    magazyn.wydrukDoPlikuStanówMagazynowych();
+                    try(PrintWriter printWriter = new PrintWriter(new FileWriter("magazyn.txt"))) {
+                        printWriter.println(magazyn.wydrukDoPlikuStanówMagazynowych());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Zapisano dane w pliku.");
                     break;
                 case 'g':
                     System.out.println("Wczytanie danych z pliku.");
+
+                    // wczytanie danych z magazynu produktów
+                    String linia;
+                    List<String> listaMagazyn = new ArrayList<>();
+                    try(BufferedReader bufferedReader = new BufferedReader(new FileReader("magazyn.txt"))) {
+                        while ((linia = bufferedReader.readLine()) != null) {
+                            String[] tabMagazyn = linia.split("=");
+                            listaMagazyn.add(tabMagazyn[1]);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+//                    listaMagazyn.forEach(System.out::println);
+
+                    for (int i = 0; i < listaMagazyn.size(); i+=3) {
+                        Produkt produkt = new Produkt();
+                        produkt.setNazwa(listaMagazyn.get(i));
+                        produkt.setCena(Double.valueOf(listaMagazyn.get(i + 1)));
+                        produkt.setIlosc(Integer.valueOf(listaMagazyn.get(i + 2)));
+                        mapaProduktów.put(listaMagazyn.get(i), produkt);
+                    }
+                    System.out.println("Wczytano dane z pliku.");
                     break;
                 case 'h':
                     System.out.println("Sprzedaż.");

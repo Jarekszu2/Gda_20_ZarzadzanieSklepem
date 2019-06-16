@@ -25,4 +25,6 @@ public class Zamowienie {
         this.produkts = produkts;
         this.dataZamowienia = dataZamowienia;
     }
+
+
 }
