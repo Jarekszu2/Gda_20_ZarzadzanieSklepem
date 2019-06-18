@@ -415,29 +415,15 @@ public class Main {
 
                     // utworzenie setów produktów do zamówień
                     List<Set<Produkt>> listaSetówProduktowZN = new ArrayList<>();
-                    int licznik = 0;
-                    Set<Produkt> setProduktowZN = new HashSet<>();
-                    for (int i = 0; i < listaProduktowOdczytanychZN.size(); i++) {
-                        if (listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.get(i) == licznik) {
-                             setProduktowZN.add(listaProduktowOdczytanychZN.get(i));
-                        } else {
-                            listaSetówProduktowZN.add(setProduktowZN);
-                            licznik++;
-                             Set<Produkt> setProduktowZNbis = new HashSet<>();
-                             setProduktowZN.add(listaProduktowOdczytanychZN.get(i));
-//                             listaSetówProduktowZN.add(setProduktowZN);
-                        }
-
-                        // ustawiam produkty w setach zgodnie z porządkiem przyporzadkowania
-                        // listaSetówProduktowZN.get(listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.get(i)).add(listaProduktowOdczytanychZN.get(i));
+                    for (int i = 0; i < listaRozmiarowSetowZN.size(); i++) {
+                        Set<Produkt> produkts = new HashSet<>();
+                        listaSetówProduktowZN.add(produkts);
                     }
-                    System.out.println("listaSetówProduktówZN (0)");
-                    // listaSetówProduktowZN.forEach(System.out::println);
-                    System.out.println(listaSetówProduktowZN.get(0));
-                    System.out.println("listaSetówProduktówZN (1)");
-                    System.out.println(listaSetówProduktowZN.get(1));
-                    System.out.println("listaSetówProduktówZN (2)");
-//                    System.out.println(listaSetówProduktowZN.get(2));
+                    System.out.println("listaSetówProduktówZN size: " + listaSetówProduktowZN.size());
+
+                    for (int i = 0; i < listaProduktowOdczytanychZN.size(); i++) {
+                            listaSetówProduktowZN.get(listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.get(i)).add(listaProduktowOdczytanychZN.get(i));
+                        }
 
                     System.out.println("listaZN size: " + listaZN.size());
                     int licz = 0;
