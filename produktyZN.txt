@@ -1,0 +1,9 @@
+nazwa=a
+cena=1.0
+ilosc=2
+nazwa=z
+cena=3.0
+ilosc=2
+nazwa=s
+cena=2.0
+ilosc=2

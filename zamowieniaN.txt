@@ -1,0 +1,12 @@
+numer=GD-2459
+produkts=2
+dataZamowienia=2019-06-18T01:34:55.331
+dataDostarczenia=null
+numerFaktury=null
+opoznienie=0
+numer=GD-5073
+produkts=1
+dataZamowienia=2019-06-18T01:34:00.257
+dataDostarczenia=null
+numerFaktury=null
+opoznienie=0

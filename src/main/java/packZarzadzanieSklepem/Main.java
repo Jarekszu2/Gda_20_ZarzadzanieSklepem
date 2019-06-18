@@ -285,13 +285,32 @@ public class Main {
                     break;
                 case 'f':
                     System.out.println("Zapis do pliku.");
-                    magazyn.wydrukDoPlikuStanówMagazynowych();
+                    // zapis magazynu produktów
+                    // magazyn.wydrukDoPlikuStanówMagazynowych();
                     try(PrintWriter printWriter = new PrintWriter(new FileWriter("magazyn.txt"))) {
-                        printWriter.println(magazyn.wydrukDoPlikuStanówMagazynowych());
+                        printWriter.print(magazyn.wydrukDoPlikuStanówMagazynowych());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("Zapisano dane w pliku.");
+                    System.out.println();
+                    System.out.println("Zapisano stany magazynowe w pliku.");
+
+                    // magazyn.wydrukDoPlikuProdZamNiedo();
+                    // zapis produktów zamówień niedostarczonych
+                    try(PrintWriter printWriter2 = new PrintWriter(new FileWriter("produktyZN.txt"))) {
+                        printWriter2.print(magazyn.wydrukDoPlikuProdZamNiedo());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Zapisano do pliku produkty zamówień niedostarczonych.");
+
+                    // zapis zamówień niedostarczonych
+                    try(PrintWriter printWriter3 = new PrintWriter(new FileWriter("zamowieniaN.txt"))) {
+                        printWriter3.print(magazyn.wydrukDoPlikuZamowienNiedostarczonych());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Zapisano do pliku zamówienia niedostarczone.");
                     break;
                 case 'g':
                     System.out.println("Wczytanie danych z pliku.");
@@ -307,8 +326,8 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+//                    System.out.println("listaMagazyn");
 //                    listaMagazyn.forEach(System.out::println);
-
                     for (int i = 0; i < listaMagazyn.size(); i+=3) {
                         Produkt produkt = new Produkt();
                         produkt.setNazwa(listaMagazyn.get(i));
@@ -316,7 +335,129 @@ public class Main {
                         produkt.setIlosc(Integer.valueOf(listaMagazyn.get(i + 2)));
                         mapaProduktów.put(listaMagazyn.get(i), produkt);
                     }
-                    System.out.println("Wczytano dane z pliku.");
+                    System.out.println("Wczytano dane z pliku magazyn.");
+
+                    // wczytanie zamówień niedostarczonych
+                    // wczytanie produktów zamówień niedostarczonych
+                    String liniaPZN;
+                    List<String> listaPZN = new ArrayList<>();
+                    try(BufferedReader bufferedReader = new BufferedReader(new FileReader("produktyZN.txt"))) {
+                        while ((liniaPZN = bufferedReader.readLine()) != null) {
+                            String[] tabPZN = liniaPZN.split("=");
+                            listaPZN.add(tabPZN[1]);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println();
+//                    System.out.println("listaPZNString");
+//                    listaPZN.forEach(System.out::println);
+                    List<Produkt> listaProduktowOdczytanychZN = new ArrayList<>();
+                    for (int i = 0; i < listaPZN.size(); i+=3) {
+                        Produkt produkt = new Produkt();
+                        produkt.setNazwa(listaPZN.get(i));
+                        produkt.setCena(Double.valueOf(listaPZN.get(i + 1)));
+                        produkt.setIlosc(Integer.valueOf(listaPZN.get(i + 2)));
+                        listaProduktowOdczytanychZN.add(produkt);
+                    }
+                    System.out.println();
+                    System.out.println("listaProduktówOdczytanychZN<Produkt>");
+                    listaProduktowOdczytanychZN.forEach(System.out::println);
+
+                    // wczytanie zamówień niedostarczonych
+                    String liniaZN;
+                    List<String> listaZN = new ArrayList<>();
+                    try(BufferedReader bufferedReader = new BufferedReader(new FileReader("zamowieniaN.txt"))) {
+                        while ((liniaZN = bufferedReader.readLine()) != null) {
+                            String[] tabZN = liniaZN.split("=");
+                            listaZN.add(tabZN[1]);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+//                    System.out.println();
+//                    System.out.println("listaZN");
+//                    listaZN.forEach(System.out::println);
+
+                    List<Integer> listaRozmiarowSetowZN = new ArrayList<>();
+                    for (int i = 0; i < listaZN.size(); i+=6) {
+//                        Zamowienie zamowienie1 = new Zamowienie();
+//                        zamowienie1.setNumer(listaZN.get(i));
+//                        zamowienie1.setProdukts(null);
+//                        zamowienie1.setDataZamowienia(null);
+//                        mapaZamowienNiedostarczonych.put(zamowienie1.getNumer(), zamowienie1);
+
+//                        System.out.println();
+//                        System.out.println("listaRozmiarów setów w liście ZN (int)");
+                        listaRozmiarowSetowZN.add(Integer.valueOf(listaZN.get((i + 1))));
+                    }
+//                    System.out.println(listaRozmiarowSetowZN);
+                    // dzielę produkty w liścieProduktówOdczytanychZN na sety zamówień
+
+
+//                    System.out.println();
+//                    System.out.println("lista pomocnicza");
+                    List<Integer> listaPomocnicza = new ArrayList<>();
+                    for (int j = 0; j < listaRozmiarowSetowZN.size(); j++) {
+                        listaPomocnicza.add(j);
+                    }
+//                    System.out.println(listaPomocnicza);
+
+                    System.out.println();
+                    List<Integer> listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN = new ArrayList<>();
+//                    System.out.println("lista kolejności przyporządkowania produktów do setów w liście ZN");
+                    for (int i = 0; i < listaRozmiarowSetowZN.size(); i++) {
+                        for (int j = 0; j < listaRozmiarowSetowZN.get(i); j++) {
+                            listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.add(listaPomocnicza.get(i));
+                        }
+                    }
+                    System.out.println(listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN);
+
+                    // utworzenie setów produktów do zamówień
+                    List<Set<Produkt>> listaSetówProduktowZN = new ArrayList<>();
+                    int licznik = 0;
+                    Set<Produkt> setProduktowZN = new HashSet<>();
+                    for (int i = 0; i < listaProduktowOdczytanychZN.size(); i++) {
+                        if (listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.get(i) == licznik) {
+                             setProduktowZN.add(listaProduktowOdczytanychZN.get(i));
+                        } else {
+                            listaSetówProduktowZN.add(setProduktowZN);
+                            licznik++;
+                             Set<Produkt> setProduktowZNbis = new HashSet<>();
+                             setProduktowZN.add(listaProduktowOdczytanychZN.get(i));
+//                             listaSetówProduktowZN.add(setProduktowZN);
+                        }
+
+                        // ustawiam produkty w setach zgodnie z porządkiem przyporzadkowania
+                        // listaSetówProduktowZN.get(listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.get(i)).add(listaProduktowOdczytanychZN.get(i));
+                    }
+                    System.out.println("listaSetówProduktówZN (0)");
+                    // listaSetówProduktowZN.forEach(System.out::println);
+                    System.out.println(listaSetówProduktowZN.get(0));
+                    System.out.println("listaSetówProduktówZN (1)");
+                    System.out.println(listaSetówProduktowZN.get(1));
+                    System.out.println("listaSetówProduktówZN (2)");
+//                    System.out.println(listaSetówProduktowZN.get(2));
+
+                    System.out.println("listaZN size: " + listaZN.size());
+                    int licz = 0;
+                    for (int i = 0; i < listaZN.size(); i+=6) {
+                        Zamowienie zamowienie1 = new Zamowienie();
+                        zamowienie1.setNumer(listaZN.get(i));
+                        zamowienie1.setProdukts(listaSetówProduktowZN.get(licz));
+                        zamowienie1.setDataZamowienia(null);
+                        mapaZamowienNiedostarczonych.put(zamowienie1.getNumer(), zamowienie1);
+                        licz++;
+                    }
+                    System.out.println();
+                    System.out.println(mapaZamowienNiedostarczonych);
+                    System.out.println();
+                    System.out.println("GD-5073" + mapaZamowienNiedostarczonych.get("GD-5073"));
+                    System.out.println();
+                    System.out.println("GD-2459" + mapaZamowienNiedostarczonych.get("GD-2459"));
+
+                    System.out.println();
+                    System.out.println("Wczytano dane z pliku zamowieniaN.txt");
                     break;
                 case 'h':
                     System.out.println("Sprzedaż.");

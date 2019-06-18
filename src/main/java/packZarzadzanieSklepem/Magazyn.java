@@ -28,7 +28,6 @@ public class Magazyn {
     }
 
     public String wydrukDoPlikuStanówMagazynowych() {
-
         String zapisMagazynu = "";
         Collection<Produkt> kolekcja = produkts.values();
         List<Produkt> listaPr = new ArrayList<>(kolekcja);
@@ -36,33 +35,51 @@ public class Magazyn {
         for (int i = 0; i < listaPr.size(); i++) {
             tab[i] = listaPr.get(i).toStringZapis();
         }
-        // System.out.println(Arrays.toString(tab));
         for (int i = 0; i < tab.length; i++) {
             zapisMagazynu += tab[i];
         }
-        String zapis = zapisMagazynu.trim();
+        String zapis = zapisMagazynu.trim().trim();
         System.out.println(zapisMagazynu);
+        return zapis;
+    }
 
-        // Set<Map.Entry<String, Produkt>> entrySet = produkts.entrySet();
-        // List<Map.Entry<String, Produkt>> listaEntry = new ArrayList<>(entrySet);
-        // String zapisMagazynu = "";
-        // String[] tabMag = new String[listaEntry.size()];
-        // for (int i = 0; i < listaEntry.size(); i++) {
-        //     tabMag[i] = "nazwa=" + listaEntry.get(i).getValue().getNazwa() + "\n" +
-        //             "cena=" + listaEntry.get(i).getValue().getCena() + "\n" +
-        //             "ilosc=" + listaEntry.get(i).getValue().getIlosc();
-        // }
-        // System.out.println(Arrays.toString(tabMag));
-        // // for (Map.Entry<String, Produkt> stringProduktEntry : entrySet) {
-        // //     zapisMagazynu = "nazwa=" + stringProduktEntry.getValue().getNazwa() + "\n" +
-        // //     "cena=" + stringProduktEntry.getValue().getCena() + "\n" +
-        // //     "ilosc=" + stringProduktEntry.getValue().getIlosc();
-        // // }
-        // for (int i = 0; i < tabMag.length; i++) {
-        //     zapisMagazynu += tabMag[i];
-        // }
-        // System.out.println(zapisMagazynu);
-         return zapis;
+    public String wydrukDoPlikuProdZamNiedo() {
+        String zapisListaProdNTemp = "";
+        Collection<Zamowienie> kolekcjaZN = zamowieniesNiedostarczone.values();
+        List<Zamowienie> listaZN = new ArrayList<>(kolekcjaZN);
+        Collections.sort(listaZN);
+        List<Produkt> listaProduktowZN = new ArrayList<>();
+        for (int i = 0; i < listaZN.size(); i++) {
+            Set<Produkt> setPZN = listaZN.get(i).getProdukts();
+            for (Produkt produkt : setPZN) {
+                listaProduktowZN.add(produkt);
+            }
+        }
+        String[] tab = new String[listaProduktowZN.size()];
+        for (int i = 0; i < listaProduktowZN.size(); i++) {
+            tab[i] = listaProduktowZN.get(i).toStringZapis();
+        }
+        for (int i = 0; i < tab.length; i++) {
+            zapisListaProdNTemp += tab[i];
+        }
+        String zapis = zapisListaProdNTemp.trim();
+        return zapis;
+    }
+
+    public String wydrukDoPlikuZamowienNiedostarczonych() {
+        String zapisZamNiedostTemp = "";
+        Collection<Zamowienie> kolekcjaNiedo = zamowieniesNiedostarczone.values();
+        List<Zamowienie> listaZamNiedo = new ArrayList<>(kolekcjaNiedo);
+        Collections.sort(listaZamNiedo);
+        String[] tabZN = new String[listaZamNiedo.size()];
+        for (int i = 0; i < listaZamNiedo.size(); i++) {
+            tabZN[i] = listaZamNiedo.get(i).zapisDoPlikuNiedo();
+        }
+        for (int i = 0; i < tabZN.length; i++) {
+            zapisZamNiedostTemp += tabZN[i];
+        }
+        String zapisZamNiedost = zapisZamNiedostTemp.trim();
+        return zapisZamNiedost;
     }
 
 

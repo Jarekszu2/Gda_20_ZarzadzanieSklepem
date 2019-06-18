@@ -1,6 +1,3 @@
 nazwa=a
 cena=1.0
 ilosc=1
-nazwa=b
-cena=2.0
-ilosc=2

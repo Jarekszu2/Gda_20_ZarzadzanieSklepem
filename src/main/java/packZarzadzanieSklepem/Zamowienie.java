@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 
-public class Zamowienie {
+public class Zamowienie implements Comparable<Zamowienie> {
     private String numer;
     private Set<Produkt> produkts;
     private LocalDateTime dataZamowienia;
@@ -26,5 +26,18 @@ public class Zamowienie {
         this.dataZamowienia = dataZamowienia;
     }
 
+    public String zapisDoPlikuNiedo() {
+        return  "numer=" + numer + "\n" +
+                "produkts=" + produkts.size() + "\n" +
+                "dataZamowienia=" + dataZamowienia + "\n" +
+                "dataDostarczenia=" + dataDostarczenia + "\n" +
+                "numerFaktury=" + numerFaktury + "\n" +
+                "opoznienie=" + opoznienie + "\n";
+    }
 
+
+    @Override
+    public int compareTo(Zamowienie o) {
+        return this.numer.compareTo(o.numer);
+    }
 }
