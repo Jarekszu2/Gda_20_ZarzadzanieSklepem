@@ -196,11 +196,10 @@ public class Main {
                                     scanner.next();
                                 }
                             } while (!poprawnaData);
-                            System.out.println(dataRegex);
+//                            System.out.println(dataRegex);
                             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
                             localDateTimeRejestracja = LocalDateTime.parse(dataRegex, dateTimeFormatter);
                         }
-
 
 //                        System.out.println(localDateTimeRejestracja);
                         zamowienieDoRejestracji.setDataDostarczenia(localDateTimeRejestracja);
@@ -208,10 +207,10 @@ public class Main {
 //                        Oznaczenie opóźnienia
                         localDateTimeZamowienie = zamowienieDoRejestracji.getDataZamowienia();
                         Timestamp timestampZamowienia = Timestamp.valueOf(localDateTimeZamowienie);
-                        System.out.println("Data i czas zamówienia: " + timestampZamowienia);
+//                        System.out.println("Data i czas zamówienia: " + timestampZamowienia);
 
                         Timestamp timestampRejestracja = Timestamp.valueOf(localDateTimeRejestracja);
-                        System.out.println("Data i czas dostawy: " + timestampRejestracja);
+//                        System.out.println("Data i czas dostawy: " + timestampRejestracja);
 
                         long roznicaCzasu = timestampRejestracja.getTime() - timestampZamowienia.getTime();
 //                        System.out.println(roznicaCzasu);
@@ -222,7 +221,7 @@ public class Main {
                         } else {
                             opoznienie = (opoznienieTemp - 60);
                         }
-                        System.out.println("opóźnienie: " + opoznienie);
+//                        System.out.println("opóźnienie: " + opoznienie);
                         zamowienieDoRejestracji.setOpoznienie(opoznienie);
 
 //                      Wczytywanie kolejnych produktów dla sprawdzenia kompletności dostawy
@@ -286,16 +285,14 @@ public class Main {
                 case 'f':
                     System.out.println("Zapis do pliku.");
                     // zapis magazynu produktów
-                    // magazyn.wydrukDoPlikuStanówMagazynowych();
                     try(PrintWriter printWriter = new PrintWriter(new FileWriter("magazyn.txt"))) {
                         printWriter.print(magazyn.wydrukDoPlikuStanówMagazynowych());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     System.out.println();
-                    System.out.println("Zapisano stany magazynowe w pliku.");
+                    System.out.println("Zapisano do pliku stany magazynowe.");
 
-                    // magazyn.wydrukDoPlikuProdZamNiedo();
                     // zapis produktów zamówień niedostarczonych
                     try(PrintWriter printWriter2 = new PrintWriter(new FileWriter("produktyZN.txt"))) {
                         printWriter2.print(magazyn.wydrukDoPlikuProdZamNiedo());
@@ -314,6 +311,7 @@ public class Main {
                     break;
                 case 'g':
                     System.out.println("Wczytanie danych z pliku.");
+                    System.out.println();
 
                     // wczytanie danych z magazynu produktów
                     String linia;
@@ -326,8 +324,6 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                    System.out.println("listaMagazyn");
-//                    listaMagazyn.forEach(System.out::println);
                     for (int i = 0; i < listaMagazyn.size(); i+=3) {
                         Produkt produkt = new Produkt();
                         produkt.setNazwa(listaMagazyn.get(i));
@@ -335,7 +331,7 @@ public class Main {
                         produkt.setIlosc(Integer.valueOf(listaMagazyn.get(i + 2)));
                         mapaProduktów.put(listaMagazyn.get(i), produkt);
                     }
-                    System.out.println("Wczytano dane z pliku magazyn.");
+                    System.out.println("Wczytano dane z pliku magazyn.txt");
 
                     // wczytanie zamówień niedostarczonych
                     // wczytanie produktów zamówień niedostarczonych
@@ -349,9 +345,7 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println();
-//                    System.out.println("listaPZNString");
-//                    listaPZN.forEach(System.out::println);
+
                     List<Produkt> listaProduktowOdczytanychZN = new ArrayList<>();
                     for (int i = 0; i < listaPZN.size(); i+=3) {
                         Produkt produkt = new Produkt();
@@ -360,9 +354,7 @@ public class Main {
                         produkt.setIlosc(Integer.valueOf(listaPZN.get(i + 2)));
                         listaProduktowOdczytanychZN.add(produkt);
                     }
-                    System.out.println();
-                    System.out.println("listaProduktówOdczytanychZN<Produkt>");
-                    listaProduktowOdczytanychZN.forEach(System.out::println);
+                    System.out.println("Wczytano dane z pliku produktyZN.txt");
 
                     // wczytanie zamówień niedostarczonych
                     String liniaZN;
@@ -375,43 +367,22 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                    System.out.println();
-//                    System.out.println("listaZN");
-//                    listaZN.forEach(System.out::println);
 
                     List<Integer> listaRozmiarowSetowZN = new ArrayList<>();
                     for (int i = 0; i < listaZN.size(); i+=6) {
-//                        Zamowienie zamowienie1 = new Zamowienie();
-//                        zamowienie1.setNumer(listaZN.get(i));
-//                        zamowienie1.setProdukts(null);
-//                        zamowienie1.setDataZamowienia(null);
-//                        mapaZamowienNiedostarczonych.put(zamowienie1.getNumer(), zamowienie1);
-
-//                        System.out.println();
-//                        System.out.println("listaRozmiarów setów w liście ZN (int)");
                         listaRozmiarowSetowZN.add(Integer.valueOf(listaZN.get((i + 1))));
                     }
-//                    System.out.println(listaRozmiarowSetowZN);
-                    // dzielę produkty w liścieProduktówOdczytanychZN na sety zamówień
-
-
-//                    System.out.println();
-//                    System.out.println("lista pomocnicza");
                     List<Integer> listaPomocnicza = new ArrayList<>();
                     for (int j = 0; j < listaRozmiarowSetowZN.size(); j++) {
                         listaPomocnicza.add(j);
                     }
-//                    System.out.println(listaPomocnicza);
 
-                    System.out.println();
                     List<Integer> listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN = new ArrayList<>();
-//                    System.out.println("lista kolejności przyporządkowania produktów do setów w liście ZN");
                     for (int i = 0; i < listaRozmiarowSetowZN.size(); i++) {
                         for (int j = 0; j < listaRozmiarowSetowZN.get(i); j++) {
                             listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.add(listaPomocnicza.get(i));
                         }
                     }
-                    System.out.println(listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN);
 
                     // utworzenie setów produktów do zamówień
                     List<Set<Produkt>> listaSetówProduktowZN = new ArrayList<>();
@@ -419,30 +390,23 @@ public class Main {
                         Set<Produkt> produkts = new HashSet<>();
                         listaSetówProduktowZN.add(produkts);
                     }
-                    System.out.println("listaSetówProduktówZN size: " + listaSetówProduktowZN.size());
 
                     for (int i = 0; i < listaProduktowOdczytanychZN.size(); i++) {
                             listaSetówProduktowZN.get(listaKolejnosciPrzyporzadkowaniaProduktowDoSetowZN.get(i)).add(listaProduktowOdczytanychZN.get(i));
                         }
 
-                    System.out.println("listaZN size: " + listaZN.size());
                     int licz = 0;
                     for (int i = 0; i < listaZN.size(); i+=6) {
                         Zamowienie zamowienie1 = new Zamowienie();
                         zamowienie1.setNumer(listaZN.get(i));
                         zamowienie1.setProdukts(listaSetówProduktowZN.get(licz));
-                        zamowienie1.setDataZamowienia(null);
+                        String ldt = listaZN.get(i + 2);
+                        LocalDateTime localDateTimeOdczyt = LocalDateTime.parse(ldt);
+                        zamowienie1.setDataZamowienia(localDateTimeOdczyt);
                         mapaZamowienNiedostarczonych.put(zamowienie1.getNumer(), zamowienie1);
                         licz++;
                     }
-                    System.out.println();
-                    System.out.println(mapaZamowienNiedostarczonych);
-                    System.out.println();
-                    System.out.println("GD-5073" + mapaZamowienNiedostarczonych.get("GD-5073"));
-                    System.out.println();
-                    System.out.println("GD-2459" + mapaZamowienNiedostarczonych.get("GD-2459"));
 
-                    System.out.println();
                     System.out.println("Wczytano dane z pliku zamowieniaN.txt");
                     break;
                 case 'h':

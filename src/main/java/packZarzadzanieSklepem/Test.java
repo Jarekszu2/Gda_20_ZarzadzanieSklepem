@@ -1,5 +1,6 @@
 package packZarzadzanieSklepem;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -57,7 +58,28 @@ public class Test {
         }
         System.out.println(tabI);
 
-        // wczytanie produktów
+        System.out.println();
+        System.out.println("Wjazd:");
+        LocalDateTime czasWjazd = LocalDateTime.now();
+        System.out.println(czasWjazd);
+        Timestamp timestamp = Timestamp.valueOf(czasWjazd);
+        System.out.println(timestamp);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println();
+        System.out.println("Wyjazd:");
+        LocalDateTime czasWyjazd = LocalDateTime.now();
+        System.out.println(czasWyjazd);
+        Timestamp timestamp2 = Timestamp.valueOf(czasWyjazd);
+        System.out.println(timestamp2);
+
+        long roznica = timestamp2.getTime() - timestamp.getTime();
+        System.out.println();
+        System.out.println("różnica: " + roznica);
+
 
     }
 }
