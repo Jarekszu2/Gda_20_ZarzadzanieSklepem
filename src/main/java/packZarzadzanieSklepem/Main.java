@@ -285,7 +285,7 @@ public class Main {
                 case 'f':
                     System.out.println("Zapis do pliku.");
                     // zapis magazynu produktów
-                    try(PrintWriter printWriter = new PrintWriter(new FileWriter("magazyn.txt"))) {
+                    try(PrintWriter printWriter = new PrintWriter(new FileWriter("magazyn.txt", true))) {
                         printWriter.print(magazyn.wydrukDoPlikuStanówMagazynowych());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -294,7 +294,7 @@ public class Main {
                     System.out.println("Zapisano do pliku stany magazynowe.");
 
                     // zapis produktów zamówień niedostarczonych
-                    try(PrintWriter printWriter2 = new PrintWriter(new FileWriter("produktyZN.txt"))) {
+                    try(PrintWriter printWriter2 = new PrintWriter(new FileWriter("produktyZN.txt", true))) {
                         printWriter2.print(magazyn.wydrukDoPlikuProdZamNiedo());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -302,7 +302,7 @@ public class Main {
                     System.out.println("Zapisano do pliku produkty zamówień niedostarczonych.");
 
                     // zapis zamówień niedostarczonych
-                    try(PrintWriter printWriter3 = new PrintWriter(new FileWriter("zamowieniaN.txt"))) {
+                    try(PrintWriter printWriter3 = new PrintWriter(new FileWriter("zamowieniaN.txt", true))) {
                         printWriter3.print(magazyn.wydrukDoPlikuZamowienNiedostarczonych());
                     } catch (IOException e) {
                         e.printStackTrace();
